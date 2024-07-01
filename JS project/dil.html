@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rock Paper Scissors Game</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #7FDBFF; /* Light blue background */
+            margin: 0;
+            padding: 0;
+            color: #001f3f; /* Dark blue text */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            height: 100vh;
+        }
+        h1 {
+            color: #001f3f; /* Dark blue text */
+        }
+        .choices {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+        }
+        .choice {
+            display: inline-block;
+            margin: 0 20px;
+            padding: 20px;
+            cursor: pointer;
+            border: 2px solid #001f3f; /* Dark blue border */
+            border-radius: 10px;
+            background-color: #ffffff; /* Default background color for choices */
+            color: #001f3f; /* Default text color for choices */
+            transition: transform 0.3s, background-color 0.3s, color 0.3s;
+        }
+        .choice:hover {
+            transform: scale(1.1);
+        }
+        #rock {
+            background-color: #555555; /* Dark grey background for Rock */
+            color: #ffffff; /* White text for Rock */
+        }
+        #rock:hover {
+            background-color: #333333; /* Darker grey on hover for Rock */
+        }
+        #paper {
+            background-color: #FFFF00; /* Bright yellow background for Paper */
+            color: #000000; /* Black text for Paper */
+        }
+        #paper:hover {
+            background-color: #FFD700; /* Darker yellow on hover for Paper */
+        }
+        #scissors {
+            background-color: #FF4500; /* Bright red background for Scissors */
+            color: #ffffff; /* White text for Scissors */
+        }
+        #scissors:hover {
+            background-color: #FF0000; /* Darker red on hover for Scissors */
+        }
+        .choice i {
+            font-size: 50px;
+        }
+        .result {
+            margin-top: 30px;
+            font-size: 24px;
+            color: #001f3f; /* Dark blue text */
+        }
+    </style>
+</head>
+<body>
+    <h1>Rock Paper Scissors Game</h1>
+    <div class="choices">
+        <div class="choice" id="rock"><i class="fas fa-hand-rock"></i></div>
+        <div class="choice" id="paper"><i class="fas fa-hand-paper"></i></div>
+        <div class="choice" id="scissors"><i class="fas fa-hand-scissors"></i></div>
+    </div>
+    <div class="result" id="result"></div>
+
+    <script>
+        const choices = document.querySelectorAll('.choice');
+        const resultDiv = document.getElementById('result');
+
+        choices.forEach(choice => {
+            choice.addEventListener('click', playGame);
+        });
+
+        function playGame(event) {
+            const userChoice = event.target.closest('.choice').id;
+            const computerChoice = getComputerChoice();
+            const result = getResult(userChoice, computerChoice);
+            displayResult(userChoice, computerChoice, result);
+            if (result === 'You win!') {
+                launchConfetti();
+            }
+        }
+
+        function getComputerChoice() {
+            const choices = ['rock', 'paper', 'scissors'];
+            const randomIndex = Math.floor(Math.random() * choices.length);
+            return choices[randomIndex];
+        }
+
+        function getResult(userChoice, computerChoice) {
+            if (userChoice === computerChoice) {
+                return 'It\'s a draw!';
+            }
+            if (
+                (userChoice === 'rock' && computerChoice === 'scissors') ||
+                (userChoice === 'paper' && computerChoice === 'rock') ||
+                (userChoice === 'scissors' && computerChoice === 'paper')
+            ) {
+                return 'You win!';
+            }
+            return 'You lose!';
+        }
+
+        function displayResult(userChoice, computerChoice, result) {
+            resultDiv.innerHTML = `
+                You chose: ${userChoice}<br>
+                Computer chose: ${computerChoice}<br>
+                ${result}
+            `;
+        }
+
+        function launchConfetti() {
+            confetti({
+                particleCount: 150,
+                spread: 70,
+                origin: { y: 0.6 }
+            });
+        }
+    </script>
+</body>
+</html>
